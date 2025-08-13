@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
@@ -68,10 +69,25 @@ public class ExcelUtils {
 		ExcelUtils excelUtil = new ExcelUtils();
 		String excelFilePath = System.getProperty("user.dir") + "\\src\\main\\resources\\Files\\InputExcel.xlsx";
 		String sheetName = "Languages";
-		
-		List<Map<String,String>> excelData = excelUtil.readDataFromExcel(excelFilePath, sheetName);
+
+		List<Map<String, String>> excelData = excelUtil.readDataFromExcel(excelFilePath, sheetName);
 //		System.out.println(excelData);
-		excelData.forEach(System.out::println);
+//		excelData.forEach(System.out::println);
+
+		List<Map<String, String>> filteredList = excelData.stream()
+				.filter(eachMap -> eachMap.get("Language").equalsIgnoreCase("Java")).collect(Collectors.toList());
+		
+		if(filteredList.size() > 0) {
+			if(filteredList.get(0).get("TypeOfLanguage").equals("Object Oriendted Programming1")) {
+				System.out.println("Pass");
+			}else {
+				System.out.println("Fail");
+			}
+		}else {
+			System.out.println("Fail");
+		}
+		
+		System.out.println("Execution ended");
 	}
 
 }
